@@ -49,6 +49,7 @@ This check follows the list of actions in order during the run of the check:
   - `CHECK_NAMESPACE`: Namespace for the check (default=`kuberhealthy`).
   - `CHECK_STORAGE_ALLOWED_CHECK_NODES`: The explicit list of nodes to check (default=auto-discover worker nodes)
   - `CHECK_STORAGE_IGNORED_CHECK_NODES`: The list of nodes to ignore for the check (default=empty)
+  - `CHECK_STORAGE_NODE_SELECTOR`: The `nodeSelector` labels to limit running onto a specific AZ required for specific PVC (default=eu-west-2a)
   - `CHECK_STORAGE_INIT_COMMAND_ARGS`: The arguments to the storage check data initialization (default=`echo storage-check-ok > /data/index.html && ls -la /data && cat /data/index.html`)
   - `CHECK_STORAGE_COMMAND_ARGS`: The arguments to the storage check command (default=`ls -la /data && cat /data/index.html && cat /data/index.html | grep storage-check-ok`)
   - `CHECK_POD_CPU_REQUEST`: Check pod deployment CPU request value. Calculated in decimal SI units `(15 = 15m cpu)`.
@@ -79,9 +80,9 @@ spec:
           value: "mysuperfuntime-pv-claim"
         - name: CHECK_STORAGE_PVC_STORAGE_CLASS_NAME
           value: "vsan-default"
-        - name : CHECK_STORAGE_IGNORED_CHECK_NODES
-          value: "node4"
-      image: chrishirsch/kuberhealthy-storage-check:v0.0.1
+        - name : CHECK_STORAGE_NODE_SELECTOR
+          value: "eu-west-2b"
+      image: psychosid/kuberhealthy-storage-check:v0.0.2
       imagePullPolicy: IfNotPresent
       name: main
       resources:
@@ -204,6 +205,3 @@ The check configuration file contains:
 
 The role, rolebinding, clusterrole, clusterrolebinding and service account are all required to create and delete all PVCs and jobs from the check in the given namespaces you install the check for. The assumed default service account does not provide enough permissions for this check to run.
 
-
-![Go](https://github.com/ChrisHirsch/kuberhealthy-storage-check/workflows/Go/badge.svg)
-![Run Gosec](https://github.com/ChrisHirsch/kuberhealthy-storage-check/workflows/Run%20Gosec/badge.svg)

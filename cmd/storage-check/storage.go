@@ -110,6 +110,8 @@ func initializeStorageConfig(jobName string, pvcName string) *batchv1.Job {
 	labels := make(map[string]string, 0)
 	labels[defaultLabelKey] = defaultLabelValueBase + strconv.Itoa(int(now.Unix()))
 	labels["source"] = "kuberhealthy"
+	nodeSelectorAffinity := make(map[string]string, 0)
+	nodeSelectorAffinity["topology.ebs.csi.aws.com/zone"] = selectedCheckNodes
 
 	// Make a Pod spec.
 	var command = []string{defaultCheckStorageInitCommand}
@@ -136,6 +138,7 @@ func initializeStorageConfig(jobName string, pvcName string) *batchv1.Job {
 						Args:    args,
 					},
 				},
+				NodeSelector:  nodeSelectorAffinity,
 				RestartPolicy: v1.RestartPolicyNever,
 				Volumes: []corev1.Volume{{
 					Name:         "data",
@@ -170,12 +173,16 @@ func checkNodeConfig(jobName string, pvcName string, node string) *batchv1.Job {
 	labels[defaultLabelKey] = defaultLabelValueBase + strconv.Itoa(int(now.Unix()))
 	labels["source"] = "kuberhealthy"
 
+	nodeSelectorAffinity := make(map[string]string, 0)
+	nodeSelectorAffinity["topology.ebs.csi.aws.com/zone"] = selectedCheckNodes
+
 	// Make a Job spec.
 	var command = []string{defaultCheckStorageCommand}
 	var args = []string{"-c", defaultCheckStorageCommandArgs}
 	pvc := &corev1.PersistentVolumeClaimVolumeSource{
 		ClaimName: pvcName,
 	}
+
 	jobSpec := batchv1.JobSpec{
 		Template: v1.PodTemplateSpec{
 			ObjectMeta: metav1.ObjectMeta{
@@ -195,6 +202,7 @@ func checkNodeConfig(jobName string, pvcName string, node string) *batchv1.Job {
 						Args:    args,
 					},
 				},
+				NodeSelector:  nodeSelectorAffinity,
 				NodeName:      node,
 				RestartPolicy: v1.RestartPolicyNever,
 				Volumes: []corev1.Volume{{

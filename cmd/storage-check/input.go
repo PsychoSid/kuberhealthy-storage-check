@@ -44,6 +44,13 @@ func parseDebugSettings() {
 // parseInputValues parses all incoming environment variables for the program into globals and fatals on errors.
 func parseInputValues() {
 
+	// Parse incoming check nodeSelector environment variable.
+	selectedCheckNodes = defaultSelectedCheckNodes
+	if len(selectedCheckNodesEnv) != 0 {
+		selectedCheckNodes = selectedCheckNodesEnv
+		log.Infoln("Parsed CHECK_STORAGE_NODE_SELECTOR:", selectedCheckNodes)
+	}
+
 	// Parse incoming check image environment variable.
 	checkStorageImage = defaultCheckStorageImage
 	if len(checkStorageImageEnv) != 0 {

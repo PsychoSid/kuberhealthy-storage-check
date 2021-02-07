@@ -1,1 +1,2 @@
 - [Chris Hirsch](mailto:chris@base2technology.com)
+- [Paul Seymour](mailto:seymourp@mac.com)

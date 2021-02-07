@@ -9,7 +9,7 @@ spec:
   timeout: 10m
   podSpec:
     containers:
-    - image: chrishirsch/kuberhealthy-storage-check:v0.0.1
+    - image: psychosid/kuberhealthy-storage-check:v0.0.2
       imagePullPolicy: IfNotPresent
       name: main
       resources:

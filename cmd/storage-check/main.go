@@ -31,6 +31,10 @@ var (
 	allowedCheckNodesEnv = os.Getenv("CHECK_STORAGE_ALLOWED_CHECK_NODES")
 	ignoredCheckNodesEnv = os.Getenv("CHECK_STORAGE_IGNORED_CHECK_NODES")
 
+	// Add a NodeSelector parameter to the jobs for multi-AZ clusters
+	selectedCheckNodesEnv = os.Getenv("CHECK_STORAGE_NODE_SELECTOR")
+	selectedCheckNodes    string
+
 	// By default, there is no storage class defined for the PVC (used the cluster default)
 	storageClassNameEnv = os.Getenv("CHECK_STORAGE_PVC_STORAGE_CLASS_NAME")
 
@@ -132,6 +136,9 @@ const (
 	// Default images used for check.
 	defaultCheckStorageImage     = "alpine:3.11"
 	defaultCheckStorageInitImage = "alpine:3.11"
+
+	// Default value for NodeSelector
+	defaultSelectedCheckNodes = "eu-west-2a"
 
 	// Default k8s manifest resource names.
 	defaultCheckStorageName        = "storage-check-pvc"

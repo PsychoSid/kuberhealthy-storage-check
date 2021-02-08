@@ -37,7 +37,7 @@ const (
 	defaultMinReadySeconds = 5
 
 	// Default container values.
-	defaultImagePullPolicy = corev1.PullIfNotPresent
+	defaultImagePullPolicy = corev1.PullAlways
 
 	// Default container resource requests values.
 	defaultMillicoreRequest = 15               // Calculated in decimal SI units (15 = 15m cpu).
@@ -203,7 +203,6 @@ func checkNodeConfig(jobName string, pvcName string, node string) *batchv1.Job {
 					},
 				},
 				NodeSelector:  nodeSelectorAffinity,
-				NodeName:      node,
 				RestartPolicy: v1.RestartPolicyNever,
 				Volumes: []corev1.Volume{{
 					Name:         "data",

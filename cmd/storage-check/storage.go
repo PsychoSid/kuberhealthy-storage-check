@@ -94,7 +94,7 @@ func createStorageConfig(pvcname string) *corev1.PersistentVolumeClaim {
 	// Add the storage spec to the storage.
 	pvc.Spec = pvcSpec
 
-	log.Infoln("PVC ", pvcname, " is", pvc, "namespace environment variables:chris", additionalEnvVars)
+	log.Infoln("PVC ", pvcname, " is", pvc, "namespace environment variables:lseg", additionalEnvVars)
 	return pvc
 }
 
@@ -574,7 +574,7 @@ func deleteStorageCheckAndWait(ctx context.Context) error {
 
 	deleteChan := make(chan error)
 	//TODO Hardcoded silly that should be abstracted and put upstream
-	jobName := checkStorageName + "-check-job"
+	jobName := checkStorageName + "-check-job-" + selectedCheckNodes
 
 	go func() {
 		defer close(deleteChan)
@@ -908,7 +908,7 @@ func findPreviousStorageCheckJob() (bool, error) {
 	for _, job := range jobList.Items {
 
 		//TODO this is dumb hardcoding again
-		if job.Name == checkStorageName+"-check-job" {
+		if job.Name == checkStorageName+"-check-job-"+selectedCheckNodes {
 			log.Infoln("Found an old storage init job belonging to this check:", job.Name)
 			return true, nil
 		}

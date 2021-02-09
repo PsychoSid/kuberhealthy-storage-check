@@ -574,7 +574,7 @@ func deleteStorageCheckAndWait(ctx context.Context) error {
 
 	deleteChan := make(chan error)
 	//TODO Hardcoded silly that should be abstracted and put upstream
-	jobName := checkStorageName + "-check-job-" + selectedCheckNodes
+	jobName := checkStorageName + "-check-job"
 
 	go func() {
 		defer close(deleteChan)
@@ -908,13 +908,13 @@ func findPreviousStorageCheckJob() (bool, error) {
 	for _, job := range jobList.Items {
 
 		//TODO this is dumb hardcoding again
-		if job.Name == checkStorageName+"-check-job-"+selectedCheckNodes {
+		if job.Name == checkStorageName+"-check-job"+selectedCheckNodes {
 			log.Infoln("Found an old storage init job belonging to this check:", job.Name)
 			return true, nil
 		}
 	}
 
-	log.Infoln("Did not find any old storace check jobs belonging to this check.")
+	log.Infoln("Did not find any old storage check jobs belonging to this check.")
 	return false, nil
 }
 

@@ -45,6 +45,12 @@ func parseDebugSettings() {
 func parseInputValues() {
 
 	// Parse incoming check nodeSelector environment variable.
+	selectedCheckNodesKey = defaultSelectedCheckNodesKey
+	if len(selectedCheckNodesKeyEnv) != 0 {
+		selectedCheckNodesKey = selectedCheckNodesKeyEnv
+		log.Infoln("Parsed CHECK_STORAGE_NODE_SELECTOR_KEY:", selectedCheckNodesKey)
+	}
+
 	selectedCheckNodes = defaultSelectedCheckNodes
 	if len(selectedCheckNodesEnv) != 0 {
 		selectedCheckNodes = selectedCheckNodesEnv

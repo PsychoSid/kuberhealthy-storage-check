@@ -111,7 +111,7 @@ func initializeStorageConfig(jobName string, pvcName string) *batchv1.Job {
 	labels[defaultLabelKey] = defaultLabelValueBase + strconv.Itoa(int(now.Unix()))
 	labels["source"] = "kuberhealthy"
 	nodeSelectorAffinity := make(map[string]string, 0)
-	nodeSelectorAffinity["topology.ebs.csi.aws.com/zone"] = selectedCheckNodes
+	nodeSelectorAffinity[selectedCheckNodesKey] = selectedCheckNodes
 
 	// Make a Pod spec.
 	var command = []string{defaultCheckStorageInitCommand}
@@ -174,7 +174,7 @@ func checkNodeConfig(jobName string, pvcName string, node string) *batchv1.Job {
 	labels["source"] = "kuberhealthy"
 
 	nodeSelectorAffinity := make(map[string]string, 0)
-	nodeSelectorAffinity["topology.ebs.csi.aws.com/zone"] = selectedCheckNodes
+	nodeSelectorAffinity[selectedCheckNodesKey] = selectedCheckNodes
 
 	// Make a Job spec.
 	var command = []string{defaultCheckStorageCommand}

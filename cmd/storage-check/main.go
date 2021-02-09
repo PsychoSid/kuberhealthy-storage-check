@@ -32,6 +32,9 @@ var (
 	ignoredCheckNodesEnv = os.Getenv("CHECK_STORAGE_IGNORED_CHECK_NODES")
 
 	// Add a NodeSelector parameter to the jobs for multi-AZ clusters
+	selectedCheckNodesKeyEnv = os.Getenv("CHECK_STORAGE_NODE_SELECTOR_KEY")
+	selectedCheckNodesKey    string
+
 	selectedCheckNodesEnv = os.Getenv("CHECK_STORAGE_NODE_SELECTOR")
 	selectedCheckNodes    string
 
@@ -138,7 +141,8 @@ const (
 	defaultCheckStorageInitImage = "alpine:3.11"
 
 	// Default value for NodeSelector
-	defaultSelectedCheckNodes = "eu-west-2a"
+	defaultSelectedCheckNodesKey = "topology.ebs.csi.aws.com/zone"
+	defaultSelectedCheckNodes    = "eu-west-2a"
 
 	// Default k8s manifest resource names.
 	defaultCheckStorageName        = "storage-check-pvc"
